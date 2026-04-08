@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Details — Anoop S R</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body class="dark-theme">
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-trail" id="cursorTrail"></div>
+
+  <!-- Loading Screen -->
+  <div class="loader" id="loader">
+    <div class="loader-inner">
+      <div class="loader-logo">ASR</div>
+      <div class="loader-bar"><div class="loader-fill" id="loaderFill"></div></div>
+      <div class="loader-text" id="loaderText">Loading project…</div>
+    </div>
+  </div>
+
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+    <span class="theme-icon sun">☀︎</span>
+    <span class="theme-icon moon">◗</span>
+  </button>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-logo">ASR</div>
+    <ul class="nav-links">
+      <li><a href="index.html#about"      class="nav-link">About</a></li>
+      <li><a href="index.html#experience" class="nav-link">Experience</a></li>
+      <li><a href="index.html#projects"   class="nav-link">Projects</a></li>
+      <li><a href="index.html#skills"     class="nav-link">Skills</a></li>
+      <li><a href="index.html#contact"    class="nav-link">Contact</a></li>
+    </ul>
+    <a href="index.html#contact" class="nav-cta">Let's Talk</a>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="index.html#about"      class="mob-link">About</a></li>
+      <li><a href="index.html#experience" class="mob-link">Experience</a></li>
+      <li><a href="index.html#projects"   class="mob-link">Projects</a></li>
+      <li><a href="index.html#skills"     class="mob-link">Skills</a></li>
+      <li><a href="index.html#contact"    class="mob-link">Contact</a></li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="project-details-wrapper">
+    <div class="container">
+
+      <!-- Back Button -->
+      <div style="padding-top: 40px;">
+        <button class="project-back-btn" onclick="window.location.href='index.html#projects'">← Back to Projects</button>
+      </div>
+
+      <!-- Project Hero Section -->
+      <section class="project-hero-section reveal-up" id="projectHero">
+        <div class="project-header-grid">
+          <div class="project-header-content">
+            <h1 id="projectTitle">Project Title</h1>
+            <p class="project-description" id="projectDescription">Project description goes here.</p>
+            
+            <div class="project-meta">
+              <div class="project-meta-item">
+                <span class="project-meta-label">Role</span>
+                <span class="project-meta-value" id="projectRole">Developer</span>
+              </div>
+              <div class="project-meta-item">
+                <span class="project-meta-label">Duration</span>
+                <span class="project-meta-value" id="projectDuration">3 months</span>
+              </div>
+            </div>
+
+            <div class="project-tech-section">
+              <h3>Tech Stack</h3>
+              <div class="project-tech-stack" id="projectTechStack">
+                <!-- Tech badges will be inserted here -->
+              </div>
+            </div>
+
+            <div class="project-actions">
+              <button class="project-action-btn" id="projectLiveBtn">View Live ↗</button>
+              <button class="project-action-btn ghost" id="projectGithubBtn">GitHub Code ↗</button>
+            </div>
+          </div>
+
+          <div id="projectImagePreview" class="reveal-right" style="position: relative; border-radius: var(--radius); overflow: hidden; height: 400px; background: var(--surface); border: 1px solid var(--border);">
+            <img id="mainProjectImage" src="images/Mpact.png" alt="Project preview" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Gallery Section -->
+      <section class="project-gallery-section reveal-up">
+        <h2>Project Gallery</h2>
+        <div class="project-gallery" id="projectGallery">
+          <!-- Gallery items will be inserted here -->
+        </div>
+      </section>
+
+      <!-- Details Section -->
+      <section class="project-details-section">
+        <div class="details-grid">
+          <div class="details-column reveal-left">
+            <h3>About This Project</h3>
+            <p id="projectFullDescription">Detailed description goes here.</p>
+          </div>
+          <div class="details-column reveal-right">
+            <h3>Key Highlights</h3>
+            <ul class="highlights-list" id="projectHighlights">
+              <!-- Highlights will be inserted here -->
+            </ul>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Related Projects Section -->
+    <section class="related-projects-section">
+      <div class="container">
+        <h2>More Projects</h2>
+        <div class="related-projects-grid" id="relatedProjects">
+          <!-- Related projects will be inserted here -->
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+  <script>
+    /* ═══════════════════════════════════════════
+       PROJECT DETAILS PAGE — DYNAMIC RENDERING
+    ═══════════════════════════════════════════ */
+
+    'use strict';
+
+    (function initProjectDetails() {
+      // Get project parameter from URL
+      const params = new URLSearchParams(window.location.search);
+      const projectId = params.get('project');
+
+      if (!projectId || !projectData[projectId]) {
+        document.getElementById('projectHero').innerHTML = '<div class="project-loading">Project not found. <a href="index.html" style="color: var(--accent); margin-left: 8px;">Back to portfolio</a></div>';
+        document.getElementById('loader').classList.add('hidden');
+        return;
+      }
+
+      const project = projectData[projectId];
+
+      // Update page title
+      document.title = `${project.title} — Anoop S R`;
+
+      // Simulate loader
+      const loader = document.getElementById('loader');
+      const fill = document.getElementById('loaderFill');
+      const text = document.getElementById('loaderText');
+
+      const loadSteps = [
+        { pct: 25, msg: 'Loading project details…' },
+        { pct: 60, msg: 'Rendering gallery…' },
+        { pct: 90, msg: 'Applying effects…' },
+        { pct: 100, msg: 'Ready!' },
+      ];
+
+      let loadStep = 0;
+      const loadInterval = setInterval(() => {
+        if (loadStep >= loadSteps.length) {
+          clearInterval(loadInterval);
+          setTimeout(() => {
+            loader.classList.add('hidden');
+            renderProjectContent();
+          }, 300);
+          return;
+        }
+        const step = loadSteps[loadStep];
+        fill.style.width = step.pct + '%';
+        text.textContent = step.msg;
+        loadStep++;
+      }, 350);
+
+      function renderProjectContent() {
+        // Header content
+        document.getElementById('projectTitle').textContent = project.title;
+        document.getElementById('projectDescription').textContent = project.description;
+        document.getElementById('projectRole').textContent = project.role;
+        document.getElementById('projectDuration').textContent = project.duration;
+        document.getElementById('projectFullDescription').textContent = project.fullDescription;
+
+        // Main preview image
+        if (project.previewImage) {
+          document.getElementById('mainProjectImage').src = project.previewImage;
+        } else if (project.images && project.images.length > 0) {
+          document.getElementById('mainProjectImage').src = project.images[0];
+        }
+
+        // Tech stack badges
+        const techStack = document.getElementById('projectTechStack');
+        techStack.innerHTML = '';
+        project.tech.forEach(tech => {
+          const badge = document.createElement('div');
+          badge.className = 'project-tech-badge';
+          badge.textContent = tech;
+          techStack.appendChild(badge);
+        });
+
+        // Gallery items
+        const gallery = document.getElementById('projectGallery');
+        gallery.innerHTML = '';
+        project.images.forEach((img, i) => {
+          const galleryItem = document.createElement('div');
+          galleryItem.className = 'project-gallery-item';
+          galleryItem.innerHTML = `
+            <img src="${img}" alt="Project image ${i + 1}" />
+            <!-- <div class="project-gallery-overlay">
+              <div class="project-gallery-icon">🔍</div>
+            </div> -->
+          `;
+          gallery.appendChild(galleryItem);
+        });
+
+        // Highlights
+        const highlights = document.getElementById('projectHighlights');
+        highlights.innerHTML = '';
+        project.highlights.forEach(highlight => {
+          const li = document.createElement('li');
+          li.textContent = highlight;
+          highlights.appendChild(li);
+        });
+
+        // Action buttons
+        const liveBtn = document.getElementById('projectLiveBtn');
+        const githubBtn = document.getElementById('projectGithubBtn');
+
+        if (project.liveLink && project.liveLink !== '#') {
+          liveBtn.addEventListener('click', () => window.open(project.liveLink, '_blank'));
+        } else {
+          liveBtn.disabled = true;
+          liveBtn.style.opacity = '0.5';
+          liveBtn.style.cursor = 'not-allowed';
+        }
+
+        if (project.githubLink && project.githubLink !== '#') {
+          githubBtn.addEventListener('click', () => window.open(project.githubLink, '_blank'));
+        } else {
+          githubBtn.disabled = true;
+          githubBtn.style.opacity = '0.5';
+          githubBtn.style.cursor = 'not-allowed';
+        }
+
+        // Related projects (show other projects)
+        renderRelatedProjects(projectId);
+
+        // Trigger reveal animations
+        setTimeout(() => {
+          document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right').forEach(el => {
+            el.classList.add('revealed');
+          });
+        }, 100);
+      }
+
+      function renderRelatedProjects(currentProjectId) {
+        const relatedContainer = document.getElementById('relatedProjects');
+        relatedContainer.innerHTML = '';
+
+        const allProjects = Object.entries(projectData);
+        const related = allProjects.filter(([id]) => id !== currentProjectId).slice(0, 3);
+
+        related.forEach(([id, proj]) => {
+          const card = document.createElement('div');
+          card.className = 'related-project-card';
+          card.innerHTML = `
+            <h4>${proj.title}</h4>
+            <p>${proj.description.substring(0, 100)}...</p>
+          `;
+          card.style.cursor = 'pointer';
+          card.addEventListener('click', () => {
+            window.location.href = `project-details.html?project=${id}`;
+          });
+          relatedContainer.appendChild(card);
+        });
+      }
+    })();
+
+    // Trigger scroll reveal on load
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right').forEach((el, i) => {
+        setTimeout(() => el.classList.add('revealed'), 50 + i * 100);
+      });
+    });
+  </script>
+
+</body>
+</html>

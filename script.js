@@ -36,6 +36,7 @@
 
 /* ── Custom Cursor ──────────────────────── */
 (function initCursor() {
+  if (window.innerWidth < 768 || 'ontouchstart' in window) return;
   const cursor = document.getElementById('cursor');
   const trail = document.getElementById('cursorTrail');
   if (!cursor || !trail) return;

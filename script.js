@@ -451,5 +451,32 @@ const projectData = {
     ],
     liveLink: "#",
     githubLink: "#"
+  },
+  Apex: {
+    title: "Apex Keyboard Website",
+    description: "Premium keyboard showcase website with advanced animations, clean UI and modern design. Built with React and Framer Motion for smooth transitions.",
+    role: "Frontend Developer",
+    duration: "2 weeks",
+    previewImage: "images/Apex.png",
+    images: [
+      "images/Apex/gallery1.png",
+      "images/Apex/gallery2.png",
+      "images/Apex/gallery3.png",
+      "images/Apex/gallery4.png",
+      "images/Apex/gallery5.png",
+      "images/Apex/gallery6.png"
+    ],
+    tech: ["React", "Framer Motion", "CSS3", "Modern Design"],
+    fullDescription: "A premium keyboard showcase website featuring advanced animations, clean UI and modern design. Built with React and Framer Motion for smooth transitions.",
+    highlights: [
+      "Advanced animations",
+      "Smooth transitions",
+      "Clean UI",
+      "Modern design",
+      "Mobile-friendly",
+      "Performance optimized"
+    ],
+    liveLink: "#",
+    githubLink: "#"
   }
 };

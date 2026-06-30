@@ -9,6 +9,40 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Rotating role styles - keeps layout height stable and uses fade+slide */
+    .hero-rotator{display:inline-block;position:relative;vertical-align:bottom;overflow:visible;white-space:nowrap;line-height:inherit;height:auto;min-height:1.05em;margin-left:.25ch}
+    .rotator-item{position:absolute;left:0;top:0;white-space:nowrap;opacity:0;transform:translateY(.35em);transition:opacity .9s cubic-bezier(0.22,1,0.36,1),transform .9s cubic-bezier(0.22,1,0.36,1);will-change:opacity,transform}
+    .rotator-item.is-visible{opacity:1;transform:translateY(0)}
+    @media (prefers-reduced-motion: reduce){
+      .rotator-item{transition:none}
+    }
+    /* New hero background: animated gradient + subtle floating blobs */
+    .hero { position: relative; overflow: visible; }
+    .hero-canvas { display: none !important; }
+    .hero::before{
+      content: "";
+      position:absolute;inset:0;z-index:0;
+      background: radial-gradient(ellipse at 10% 20%, rgba(10,200,160,0.08), transparent 8%), radial-gradient(ellipse at 90% 80%, rgba(60,140,255,0.06), transparent 15%), linear-gradient(180deg, rgba(6,10,14,0.6), rgba(2,6,12,0.85));
+      background-blend-mode:screen,screen,normal;
+      background-size:200% 200%;
+      animation: heroBgShift 14s ease-in-out infinite;
+      will-change:background-position,opacity;
+    }
+    @keyframes heroBgShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    .hero-blobs{position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:screen;opacity:0.65}
+    .hero-blobs .blob{filter:blur(30px);opacity:0.9}
+    .blob-a{animation:blobMoveA 18s ease-in-out infinite}
+    .blob-b{animation:blobMoveB 20s ease-in-out infinite}
+    .blob-c{animation:blobMoveC 22s ease-in-out infinite}
+    @keyframes blobMoveA{0%{transform:translate(-10%,0) scale(1)}50%{transform:translate(15%,-6%) scale(1.05)}100%{transform:translate(-10%,0) scale(1)}}
+    @keyframes blobMoveB{0%{transform:translate(10%,10%) scale(0.95)}50%{transform:translate(-12%,6%) scale(1.02)}100%{transform:translate(10%,10%) scale(0.95)}}
+    @keyframes blobMoveC{0%{transform:translate(-5%,12%) scale(1)}50%{transform:translate(8%,-8%) scale(1.04)}100%{transform:translate(-5%,12%) scale(1)}}
+    @media (prefers-reduced-motion: reduce){
+      .hero::before,.hero-blobs .blob{animation:none;filter:none}
+    }
+    .hero-content{position:relative;z-index:2}
+  </style>
 </head>
 
 <body class="dark-theme">
@@ -65,6 +99,24 @@
   <section class="hero" id="hero">
     <canvas class="hero-canvas" id="heroCanvas"></canvas>
     <div class="hero-gradient"></div>
+    <!-- SVG blob layer for animated background -->
+    <svg class="hero-blobs" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="g1" x1="0" x2="1">
+          <stop offset="0%" stop-color="#00ffd6" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#00aaff" stop-opacity="0.9"/>
+        </linearGradient>
+        <linearGradient id="g2" x1="0" x2="1">
+          <stop offset="0%" stop-color="#ff7ad1" stop-opacity="0.85"/>
+          <stop offset="100%" stop-color="#7a5cff" stop-opacity="0.85"/>
+        </linearGradient>
+      </defs>
+      <g>
+        <circle class="blob blob-a" cx="140" cy="120" r="120" fill="url(#g1)" />
+        <circle class="blob blob-b" cx="640" cy="280" r="110" fill="url(#g2)" />
+        <circle class="blob blob-c" cx="420" cy="60" r="90" fill="url(#g1)" />
+      </g>
+    </svg>
     <div class="floating-orb orb-1"></div>
     <div class="floating-orb orb-2"></div>
     <div class="floating-orb orb-3"></div>
@@ -76,8 +128,12 @@
       </div>
       <h1 class="hero-title">
         <span class="hero-line reveal-stagger">Hi, I'm Anoop S R</span>
-        <span class="hero-line hero-line-accent reveal-stagger">MERN Stack</span>
-        <span class="hero-line reveal-stagger">Developer</span>
+        <span class="hero-rotator" aria-live="polite" aria-atomic="true">
+          <span class="rotator-item hero-line hero-line-accent is-visible">React Developer</span>
+          <span class="rotator-item hero-line hero-line-accent">Frontend Developer</span>
+          <span class="rotator-item hero-line hero-line-accent">Software Engineer</span>
+          <span class="rotator-item hero-line hero-line-accent">MERN Stack Developer</span>
+        </span>
       </h1>
       <p class="hero-sub reveal-stagger">
         Full Stack Developer specializing in React.js, Node.js &amp; MongoDB.<br />
@@ -498,6 +554,52 @@
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    (function(){
+      const VISIBLE_MS = 3000; // time a title stays visible
+      const TRANS_MS = 900; // matches CSS transition duration (ms)
+      const items = Array.from(document.querySelectorAll('.rotator-item'));
+      if(!items.length) return;
+
+      const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(reduce){ items.forEach((it,i)=> it.classList.toggle('is-visible', i===0)); return; }
+
+      let idx = items.findIndex(i=> i.classList.contains('is-visible'));
+      if(idx < 0){ idx = 0; items.forEach((it,i)=> it.classList.toggle('is-visible', i===0)); }
+
+      let visibleTimer = null;
+      let transitionTimer = null;
+
+      function scheduleNext(){
+        clearTimeout(visibleTimer);
+        visibleTimer = setTimeout(()=>{
+          const next = (idx + 1) % items.length;
+          const current = items[idx];
+          const incoming = items[next];
+          // fade out current
+          current.classList.remove('is-visible');
+          // after fade-out completes, show incoming
+          transitionTimer = setTimeout(()=>{
+            // ensure only incoming will be visible
+            items.forEach(it => it !== incoming && it.classList.remove('is-visible'));
+            requestAnimationFrame(()=> incoming.classList.add('is-visible'));
+            idx = next;
+            scheduleNext();
+          }, TRANS_MS);
+        }, VISIBLE_MS);
+      }
+
+      scheduleNext();
+
+      const rotator = document.querySelector('.hero-rotator');
+      function pause(){ clearTimeout(visibleTimer); clearTimeout(transitionTimer); visibleTimer = null; transitionTimer = null; }
+      function resume(){ if(!visibleTimer) scheduleNext(); }
+      rotator.addEventListener('mouseenter', pause);
+      rotator.addEventListener('focusin', pause);
+      rotator.addEventListener('mouseleave', resume);
+      rotator.addEventListener('focusout', resume);
+    })();
+  </script>
 </body>
 
 </html>

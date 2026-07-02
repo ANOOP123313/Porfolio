@@ -399,8 +399,8 @@ const projectData = {
       "API integration for movie data",
       "Local storage for preferences"
     ],
-    liveLink: "#",
-    githubLink: "#"
+    liveLink: "https://mrs-cinematch.netlify.app/",
+    githubLink: "https://github.com/ANOOP123313/Cinematch"
   },
   kerala: {
     title: "Kerala Tourism",
@@ -424,8 +424,8 @@ const projectData = {
       "Responsive grid layouts",
       "Performance optimized"
     ],
-    liveLink: "#",
-    githubLink: "#"
+    liveLink: "https://anoop123313.github.io/Kerala-Tourism/",
+    githubLink: "https://github.com/ANOOP123313/Kerala-Tourism"
   },
   carzone: {
     title: "Parallax Website",
@@ -449,7 +449,7 @@ const projectData = {
       "Cross-browser compatible",
       "Performance optimized"
     ],
-    liveLink: "#",
+    liveLink: "https://anoop123313.github.io/CarZone/",
     githubLink: "https://github.com/ANOOP123313/CarZone"
   },
   Apex: {

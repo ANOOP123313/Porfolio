@@ -10,16 +10,44 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* Rotating role styles - keeps layout height stable and uses fade+slide */
-    .hero-rotator{display:block;position:relative;overflow:hidden;white-space:nowrap;line-height:inherit;height:auto;min-height:1.05em;text-align:center;width:100%;max-width:100%;box-sizing:border-box;margin:0 auto;}
+    /* Rotating role styles - keeps layout height stable and prevents overlap */
+    .hero-rotator{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      overflow:hidden;
+      white-space:nowrap;
+      line-height:inherit;
+      min-height:1.25em;
+      text-align:center;
+      width:100%;
+      max-width:100%;
+      box-sizing:border-box;
+      margin:0 auto;
+      padding:0 8px;
+    }
     .hero-rotator::after{content:"MERN Stack Developer";display:block;visibility:hidden;height:0;overflow:hidden;}
-    .rotator-item{display:block;position:absolute;left:0;right:0;top:0;white-space:nowrap;text-align:center;opacity:0;transform:translateY(.35em);transition:opacity .9s cubic-bezier(0.22,1,0.36,1),transform .9s cubic-bezier(0.22,1,0.36,1);will-change:opacity,transform}
-    .rotator-item.is-visible{opacity:1;transform:translateY(0)}
+    .rotator-item{
+      display:block;
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%, calc(-50% + .35em));
+      width:max-content;
+      max-width:100%;
+      white-space:nowrap;
+      text-align:center;
+      opacity:0;
+      transition:opacity .9s cubic-bezier(0.22,1,0.36,1),transform .9s cubic-bezier(0.22,1,0.36,1);
+      will-change:opacity,transform;
+    }
+    .rotator-item.is-visible{opacity:1;transform:translate(-50%, -50%)}
     @media (prefers-reduced-motion: reduce){
       .rotator-item{transition:none}
     }
     @media (max-width: 480px) {
-      .hero-rotator { padding: 0 12px; }
+      .hero-rotator { padding: 0 12px; min-height: 1.35em; }
       .hero-line-accent { font-size: clamp(2rem, 9vw, 3.2rem); line-height: 1.05; }
       .hero-title { font-size: clamp(1.9rem, 9vw, 2.6rem); }
     }
@@ -99,19 +127,19 @@
       <h1 class="hero-title">
         <span class="hero-line reveal-stagger">Hi, I'm Anoop S R</span>
         <span class="hero-rotator" aria-live="polite" aria-atomic="true">
-          <span id="reactTitle" class="rotator-item hero-line hero-line-accent is-visible">React Developer</span>
+          <span id="reactTitle" class="rotator-item hero-line hero-line-accent">React Developer</span>
           <span id="frontendTitle" class="rotator-item hero-line hero-line-accent">Frontend Developer</span>
           <span id="softwareTitle" class="rotator-item hero-line hero-line-accent">Software Engineer</span>
-          <span class="rotator-item hero-line hero-line-accent" id="needcentre">MERN Stack Developer</span>
+          <span class="rotator-item hero-line hero-line-accent is-visible" id="needcentre">MERN Stack Developer</span>
         </span>
       </h1>
       <p class="hero-sub reveal-stagger">
-        Full Stack Developer specializing in React.js, Node.js &amp; MongoDB.<br />
-        Building scalable web apps with clean UI and solid backend logic.
+        Building scalable web apps with React.js, Node.js & MongoDB — clean UI, <br> solid backend logic.
       </p>
       <div class="hero-actions reveal-stagger">
         <a href="#projects" class="btn btn-primary">View My Work</a>
         <a href="#contact" class="btn btn-ghost">Say Hello →</a>
+        <a href="/images/resume.pdf" class="btn btn-primary" download>Download Resume</a>
       </div>
     </div>
 
@@ -202,13 +230,14 @@
             <h3 class="exp-role">MERN Stack Developer</h3>
             <p class="exp-company">Scipy Technologies</p>
           </div>
-          <span class="exp-badge">Full Time</span>
+          <span class="exp-badge">Intern</span>
         </div>
         <ul class="exp-list">
-          <li>Developed and maintained scalable web applications using React.js, Node.js, Express.js, and MongoDB.</li>
-          <li>Built and integrated RESTful APIs to improve app performance and features.</li>
-          <li>Designed responsive, user-friendly interfaces with React and Tailwind CSS.</li>
-          <li>Used Git and GitHub for version control and team collaboration.</li>
+          <li>Built and shipped responsive UI components in React.js and Tailwind CSS, used across multiple pages and features of the product.</li>
+          <li>Designed and developed REST APIs for authentication and product management, integrating them end-to-end with the React frontend.</li>
+          <li>Tested and validated API endpoints using Postman before frontend integration, catching bugs earlier in the development cycle.</li>
+          <li>Replaced repeated UI patterns with a reusable component library, reducing duplicate code and speeding up future feature development.</li>
+          <li>Collaborated in a Git/GitHub workflow — branching, pull requests, and code review — with the existing engineering team.</li>
         </ul>
         <div class="exp-tech">
           <span class="ptag">React.js</span>
@@ -454,7 +483,7 @@
               <div class="sicon">💳</div><span>Razorpay</span>
             </div>
             <div class="skill-icon-item">
-              <div class="sicon">🐍</div><span>Django</span>
+              <div class="sicon">⟨/⟩</div><span>HTML</span>
             </div>
             <div class="skill-icon-item">
               <div class="sicon">📦</div><span>RTK Query</span>
@@ -560,14 +589,6 @@
       }
 
       scheduleNext();
-
-      const rotator = document.querySelector('.hero-rotator');
-      function pause(){ clearTimeout(visibleTimer); clearTimeout(transitionTimer); visibleTimer = null; transitionTimer = null; }
-      function resume(){ if(!visibleTimer) scheduleNext(); }
-      rotator.addEventListener('mouseenter', pause);
-      rotator.addEventListener('focusin', pause);
-      rotator.addEventListener('mouseleave', resume);
-      rotator.addEventListener('focusout', resume);
     })();
   </script>
 </body>
